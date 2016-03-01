@@ -10,10 +10,10 @@ namespace TicTacToe.Models
         private Board Board { get; set; }
         public Board.Tile ComputerTile { get; private set; }
 
-        public Computer(Board board)
+        public Computer(Board board, Board.Tile computerTile)
         {
             Board = board;
-            ComputerTile = Board.Tile.Noughts;
+            ComputerTile = computerTile;
         }
 
         internal int[] Move()

@@ -32,19 +32,20 @@ namespace TicTacToe
             get { return _instance.Value; }
         }
 
-        public Player CreaterPlayer()
+        public Player CreatePlayer()
         {
             Player p = new Player();
             _players[p.Id] = p;
             return p;
         }
 
-        internal Game CreateGame(Player player)
+        internal Game CreateGame(Player player,
+            Board.Tile playerTile = Board.Tile.Cross)
         {
             Game game = new Game()
             {
                 Player = player,
-                Board = new Board()
+                Board = new Board(playerTile)
             };
 
             _games[player.Id] = game;

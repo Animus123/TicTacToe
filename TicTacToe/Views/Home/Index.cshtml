@@ -12,7 +12,8 @@
 }
 
 <h1 class="text-center" id="status">Tic Tac Toe</h1>
-<div id="container" class="col-lg-offset-3">
+
+<div id="container" class="row col-lg-offset-3">
 
     <ul id="board">
         @for (int i = 0; i < 3; i++)
@@ -26,13 +27,15 @@
     </ul>
 </div>
 <footer>
-    <button id="reset">Reset Game</button>
+    <button id="resetCross" name="crosses">Start new game for the Crosses</button>
+    <button id="resetNoughts" name="noughts">Start new game for the Noughts</button>
 </footer>
 
 <script type="text/javascript">
     $(document).ready(function () {
         var gameHub = $.connection.gameHub;
-
+        var side = 'x';
+        var oppositeSide = 'o';
         //начало игры
         $.connection.hub.start().done(function () {
             gameHub.server.newPlayer();
@@ -50,8 +53,8 @@
                     if (result) {
                         //если ход игрока (метод move) возвращает true
                         var element = document.getElementById(id)
-                        element.innerHTML = "x";
-                        element.className = "x";
+                        element.innerHTML = side;
+                        element.className = side;
                         //ходит компьютер, вызывается метод ComputerMove на сервере,
                         //который в свою очередь вызывает function gameHub.client.computerMove на клиенте
                         gameHub.server.computerMove();
@@ -64,8 +67,8 @@
             console.log(move);
             if (move != null) {
                 var element = document.getElementById("tile_[" + move[0] + ',' + move[1] + ']')
-                element.innerHTML = "o";
-                element.className = "o";
+                element.innerHTML = oppositeSide;
+                element.className = oppositeSide;
             } else if ($('.empty').length == 0) {
                 $('#status').html("Tie! Try again?")
             }         
@@ -79,15 +82,32 @@
             $('#status').html("You lose! Try again?")
         }
 
-        $("#reset").click(function () {
-            gameHub.server.resetGame().done(function () {
-                $('#status').html("Tic Tac Toe")
-                $("li[id^='tile']").each(function () {
-                    $(this).addClass('empty').removeClass('x o');
-                    $(this).html('+');
+        $("#resetCross").click(function () {
+            gameHub.server.resetGame($(this).attr('name')).done(function () {          
+                side = 'x';
+                oppositeSide = 'o';
+                clearBoard();
                 });
+        });
+
+        $("#resetNoughts").click(function () {
+            gameHub.server.resetGame($(this).attr('name')).done(function () {          
+                side = 'o';
+                oppositeSide = 'x';
+                clearBoard();
+                gameHub.server.computerMove();
             });
         });
 
+        function clearBoard() {
+            $('#status').html("Tic Tac Toe")
+            $("li[id^='tile']").each(function () {
+                $(this).addClass('empty').removeClass('x o');
+                $(this).html('+');
+            }
+            )
+        };
     });
+
+    
 </script>

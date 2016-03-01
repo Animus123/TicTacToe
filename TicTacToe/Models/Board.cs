@@ -7,12 +7,22 @@ namespace TicTacToe.Models
 {
     public class Board
     {
-        public Tile PlayerTile { get; private set; } = Tile.Cross;
+        public Tile PlayerTile { get; private set; }
         public Tile[,] Tiles { get; private set; }
         public Computer Computer { get; set; }
 
-        public Board()
+        public Board(Board.Tile playerTile)
         {
+            if (playerTile == Tile.Cross)
+            {
+                PlayerTile = Tile.Cross;
+                Computer = new Computer(this, Tile.Noughts);
+            }
+            else
+            {
+                PlayerTile = Tile.Noughts;
+                Computer = new Computer(this, Tile.Cross);
+            }
             Tiles = new Tile[3, 3];
 
             for (int i = 0; i < 3; i++)
@@ -22,8 +32,6 @@ namespace TicTacToe.Models
                     Tiles[i, j] = Tile.Emptу;
                 }
             }
-
-            Computer = new Computer(this);
         }
 
         public enum Tile

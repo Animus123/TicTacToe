@@ -24,13 +24,13 @@
 	border-radius: 5px;
 }
 
-#board li:hover, #reset:hover{
+#board li:hover, #resetCross:hover, #resetNoughts:hover{
 	cursor: pointer;
 	background:#000;
 	
 }
 
-#reset{
+#resetCross, #resetNoughts{
 	border:0;
 	background:#444;
 	color:#fff;

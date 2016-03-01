@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -7,7 +8,10 @@ namespace TicTacToe.Models
 {
     public class Board
     {
+        public int Id { get; set; }
+
         public Tile PlayerTile { get; private set; }
+
         public Tile[,] Tiles { get; private set; }
         public Computer Computer { get; set; }
 
@@ -148,6 +152,18 @@ namespace TicTacToe.Models
 
             //никто пока не победил
             return Tile.Emptу;
+        }
+
+        internal bool DoesBoardHasEmptyTiles()
+        {
+            foreach (Tile tile in Tiles)
+            {
+                if (tile == Tile.Emptу)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

@@ -82,6 +82,10 @@
             $('#status').html("You lose! Try again?")
         }
 
+        gameHub.client.tie = function () {
+            $('#status').html("Tie! Try again?")
+        }
+
         $("#resetCross").click(function () {
             gameHub.server.resetGame($(this).attr('name')).done(function () {          
                 side = 'x';

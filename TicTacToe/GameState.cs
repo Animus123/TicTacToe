@@ -35,7 +35,7 @@ namespace TicTacToe
         public Player CreatePlayer()
         {
             Player p = new Player();
-            _players[p.Id] = p;
+            _players[p.Guid] = p;
             return p;
         }
 
@@ -48,27 +48,27 @@ namespace TicTacToe
                 Board = new Board(playerTile)
             };
 
-            _games[player.Id] = game;
+            _games[player.Guid] = game;
 
             return game;
         }
 
         public Player GetPlayer(string userId)
         {
-            return _players.Values.FirstOrDefault(user => user.Id == userId);
+            return _players.Values.FirstOrDefault(user => user.Guid == userId);
         }
 
         public Game FindGame(Player player)
         {
             Game game;
-            _games.TryGetValue(player.Id, out game);
+            _games.TryGetValue(player.Guid, out game);
             return game;
         }
 
         public bool RemoveGame(Player player)
         {
             Game game;
-            return _games.TryRemove(player.Id,out game);
+            return _games.TryRemove(player.Guid,out game);
          
         }
     }

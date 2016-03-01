@@ -13,7 +13,7 @@ namespace TicTacToe
         {
             var player = GameState.Instance.CreatePlayer();
             var game = GameState.Instance.CreateGame(player);
-            Clients.Caller.id = player.Id;
+            Clients.Caller.id = player.Guid;
         }
 
         public void ResetGame(string side)
@@ -43,13 +43,31 @@ namespace TicTacToe
                 //сделать ход и возвратить true если ход сделан
                 int[] tileIndex = tileName.Where(char.IsDigit).Select(i => int.Parse(i.ToString())).ToArray();
                 bool move = game.Board.Move(tileIndex);
+                if (tileName!=null)
+                {
+                    game.Moves.Add(new Move("player: " + tileName)); 
+                }
 
                 game.Winner = game.Board.CheckWinner();
 
                 if (game.Winner == game.Board.PlayerTile)
                 {
                     Clients.Caller.playerWins();
+                    using (var context = new GameContext())
+                    {
+                        context.Games.Add(game);
+                        context.SaveChanges();
+                    }
                     return true;
+                }
+                else if (!game.Board.DoesBoardHasEmptyTiles())
+                {
+                    Clients.Caller.tie();
+                    using (var context = new GameContext())
+                    {
+                        context.Games.Add(game);
+                        context.SaveChanges();
+                    }
                 }
 
                 return true;
@@ -66,13 +84,31 @@ namespace TicTacToe
             if (game.Winner == Board.Tile.Emptу)
             {
                 int[] move = game.Board.Computer.Move();
+                if (move!=null)
+                {
+                    game.Moves.Add(new Move("computer: [" + move[0] + "," + move[1] + "]")); 
+                }
                 Clients.Caller.computerMove(move);
 
                 game.Winner = game.Board.CheckWinner();
                 if (game.Winner == game.Board.Computer.ComputerTile)
                 {
                     Clients.Caller.computerWins();
-                }  
+                    using (var context = new GameContext())
+                    {
+                        context.Games.Add(game);
+                        context.SaveChanges();
+                    }
+                }
+                else if (!game.Board.DoesBoardHasEmptyTiles())
+                {
+                    Clients.Caller.tie();
+                    using (var context = new GameContext())
+                    {
+                        context.Games.Add(game);
+                        context.SaveChanges();
+                    }
+                }
             }
 
         }

@@ -10,8 +10,14 @@ namespace TicTacToe.Models
     {
         public int Id { get; set; }
 
+        /// <summary>
+        /// Определяет за кого игрок 'x' или 'o'
+        /// </summary>
         public Tile PlayerTile { get; private set; }
 
+        /// <summary>
+        /// Все клетки поля
+        /// </summary>
         public Tile[,] Tiles { get; private set; }
         public Computer Computer { get; set; }
 
@@ -38,6 +44,9 @@ namespace TicTacToe.Models
             }
         }
 
+        /// <summary>
+        /// Значения клеток на игровом поле
+        /// </summary>
         public enum Tile
         {
             Noughts,
@@ -45,6 +54,11 @@ namespace TicTacToe.Models
             Emptу
         }
 
+        /// <summary>
+        /// Сделать ход игроком
+        /// </summary>
+        /// <param name="index">Клетка в которую будет сделан ход</param>
+        /// <returns>Сделан ли ход</returns>
         internal bool Move(int[] index)
         {
             if (Tiles[index[0], index[1]] == Tile.Emptу)
@@ -58,6 +72,9 @@ namespace TicTacToe.Models
             }
         }
 
+        /// <summary>
+        /// Проверка, победил ли кто то из игроков
+        /// </summary>
         internal Tile CheckWinner()
         {
             //проверить горизонтали
@@ -154,6 +171,9 @@ namespace TicTacToe.Models
             return Tile.Emptу;
         }
 
+        /// <summary>
+        /// Есть ли еще пустые поля для ходов 
+        /// </summary>
         internal bool DoesBoardHasEmptyTiles()
         {
             foreach (Tile tile in Tiles)

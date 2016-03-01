@@ -8,6 +8,10 @@ namespace TicTacToe.Models
     public class Computer
     {
         private Board Board { get; set; }
+
+        /// <summary>
+        /// Определяет за кого компьютер 'x' или 'o'
+        /// </summary>
         public Board.Tile ComputerTile { get; private set; }
 
         public Computer(Board board, Board.Tile computerTile)
@@ -16,6 +20,10 @@ namespace TicTacToe.Models
             ComputerTile = computerTile;
         }
 
+        /// <summary>
+        /// Ход компьютера
+        /// </summary>
+        /// <returns>Клетка, в которую походил компьютер</returns>
         internal int[] Move()
         {
             int[] computerMove;

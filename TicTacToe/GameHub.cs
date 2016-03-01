@@ -9,6 +9,9 @@ namespace TicTacToe
 {
     public class GameHub : Hub
     {
+        /// <summary>
+        /// Создать нового игрока и игру для него
+        /// </summary>
         public void NewPlayer()
         {
             var player = GameState.Instance.CreatePlayer();
@@ -16,6 +19,10 @@ namespace TicTacToe
             Clients.Caller.id = player.Guid;
         }
 
+        /// <summary>
+        /// Начать игру заново
+        /// </summary>
+        /// <param name="side">Играть за 'x' или 'o'</param>
         public void ResetGame(string side)
         {
             var userId = Clients.Caller.id;
@@ -32,6 +39,11 @@ namespace TicTacToe
 
         }
 
+        /// <summary>
+        /// Ходит игрок
+        /// </summary>
+        /// <param name="tileName">строковое представление клетки на которой кликнул игрок</param>
+        /// <returns>был ли сделан ход</returns>
         public bool Move(string tileName)
         {
             var userId = Clients.Caller.id;
@@ -75,6 +87,9 @@ namespace TicTacToe
             return false;       
         }
 
+        /// <summary>
+        /// Ход компьютера
+        /// </summary>
         public void ComputerMove()
         {
             var userId = Clients.Caller.id;

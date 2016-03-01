@@ -1,5 +1,8 @@
 ﻿namespace TicTacToe.Models
 {
+    /// <summary>
+    /// Информация о совершенном ходе
+    /// </summary>
     public class Move
     {
         public int Id { get; set; }

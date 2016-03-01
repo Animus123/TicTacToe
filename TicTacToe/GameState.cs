@@ -11,12 +11,15 @@ namespace TicTacToe
 {
     public class GameState
     {
+        //игровое состояние - синглтон
         private static readonly Lazy<GameState> _instance = new Lazy<GameState>(
             () => new GameState(GlobalHost.ConnectionManager.GetHubContext<GameHub>()));
 
+        //коллекция игроков
         private readonly ConcurrentDictionary<string, Player> _players =
             new ConcurrentDictionary<string, Player>(StringComparer.OrdinalIgnoreCase);
 
+        //коллекция игр
         private readonly ConcurrentDictionary<string, Game> _games =
             new ConcurrentDictionary<string, Game>(StringComparer.OrdinalIgnoreCase);
 

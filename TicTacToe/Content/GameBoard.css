@@ -1,0 +1,63 @@
+﻿
+#container{
+	width: 350px;
+	overflow: auto;
+	margin:40px auto;
+	background: #666;
+    padding-top: 40px;
+	padding-bottom:40px;
+
+	border-radius: 10px;
+}
+
+#board li{
+    line-height:none;
+	float: left;
+	margin: 10px;
+	height: 70px;
+	width: 70px;
+	font-size: 55px;
+	background:#333;
+	color:#ccc;
+	list-style:none;
+	text-align:center;
+	border-radius: 5px;
+}
+
+#board li:hover, #reset:hover{
+	cursor: pointer;
+	background:#000;
+	
+}
+
+#reset{
+	border:0;
+	background:#444;
+	color:#fff;
+	padding: 15px;
+	border-radius: 5px;
+}
+
+footer{
+	display:block;
+	text-align:center;
+	padding-top: 20px;
+}
+
+.o{
+	color: green !important
+}
+
+.x{
+	color:red !important
+}
+
+#status {
+	border:0;
+	background:#4b5a82;
+	color:#fff;
+	padding: 15px;
+	border-radius: 5px;
+    margin:auto;
+    text-align:center;
+}

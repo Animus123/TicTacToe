@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewBag.Title = "Game";
+}
+
+@section head
+{
+    <link rel="stylesheet" href="~/Content/GameBoard.css" media="screen" />
+    <script src="~/scripts/handlebars.js"></script>
+    <script src="~/scripts/jquery.signalR-2.2.0.js"></script>
+    <script src="/signalr/hubs"></script>
+}
+
+<h1 class="text-center" id="status">Tic Tac Toe</h1>
+<div id="container" class="col-lg-offset-3">
+
+    <ul id="board">
+        @for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                <li id="tile_[@i,@j]" class="empty">+</li>
+            }
+        }
+        
+    </ul>
+</div>
+<footer>
+    <button id="reset">Reset Game</button>
+</footer>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var gameHub = $.connection.gameHub;
+
+        //начало игры
+        $.connection.hub.start().done(function () {
+            gameHub.server.newPlayer();
+        });
+
+        //нажатие на tile
+        $("li[id^='tile']").click(function (e) {
+            e.preventDefault();
+            
+            var id = this.id;
+
+            //вызвать на сервере метод move и передать id tile'а
+            if ($(this).hasClass('empty')) {
+                gameHub.server.move(id).done(function (result) {
+                    if (result) {
+                        //если ход игрока (метод move) возвращает true
+                        var element = document.getElementById(id)
+                        element.innerHTML = "x";
+                        element.className = "x";
+                        //ходит компьютер, вызывается метод ComputerMove на сервере,
+                        //который в свою очередь вызывает function gameHub.client.computerMove на клиенте
+                        gameHub.server.computerMove();
+                    }
+                });
+            }            
+        });
+
+        gameHub.client.computerMove = function(move) {
+            console.log(move);
+            if (move != null) {
+                var element = document.getElementById("tile_[" + move[0] + ',' + move[1] + ']')
+                element.innerHTML = "o";
+                element.className = "o";
+            } else if ($('.empty').length == 0) {
+                $('#status').html("Tie! Try again?")
+            }         
+        }
+
+        gameHub.client.playerWins = function () {
+            $('#status').html("You win! Try again?")
+        }
+
+        gameHub.client.computerWins = function () {
+            $('#status').html("You lose! Try again?")
+        }
+
+        $("#reset").click(function () {
+            gameHub.server.resetGame().done(function () {
+                $('#status').html("Tic Tac Toe")
+                $("li[id^='tile']").each(function () {
+                    $(this).addClass('empty').removeClass('x o');
+                    $(this).html('+');
+                });
+            });
+        });
+
+    });
+</script>
